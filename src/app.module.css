@@ -1,0 +1,11 @@
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  background-color: aqua;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  align-items: center;
+  flex-wrap: wrap;
+}
