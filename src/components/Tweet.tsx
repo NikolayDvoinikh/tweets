@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./tweet.module.css";
 
-interface TwitterUser {
+export interface TwitterUser {
   name: string;
   avatar: string;
   tweets: number;
@@ -9,38 +9,37 @@ interface TwitterUser {
   id: string;
 }
 
-export const Tweet = ({ tweeter }: { tweeter: TwitterUser }) => {
-  const [follow, setFollow] = useState(() => {
-    const data = localStorage.getItem("myFollowings");
-    if (data) {
-      try {
+export const Tweet = ({ twitter }: { twitter: TwitterUser }) => {
+  const [follow, setFollow] = useState<boolean>(() => {
+    try {
+      const data = localStorage.getItem("myFollowings");
+      if (data) {
         const parsedData = JSON.parse(data);
-        if (parsedData[tweeter.id]) return parsedData[tweeter.id] || false;
-      } catch {
-        console.log("Oops no data");
-        return false;
+        return parsedData[twitter.id] || false;
       }
-    } else {
+      return false;
+    } catch (e) {
+      console.error("Error updating local storage:", e);
       return false;
     }
   });
-  const [followers, setFollowers] = useState(tweeter);
+  const [followers, setFollowers] = useState(twitter);
 
   const handleClick = () => {
     setFollow((prev) => !prev);
     setFollowers((prev) => ({
       ...prev,
-      followers: prev.followers + (!follow ? 1 : -1),
+      followers: prev.followers + (follow ? -1 : 1),
     }));
     try {
       const myFollowings = localStorage.getItem("myFollowings");
       const parsedData = myFollowings ? JSON.parse(myFollowings) : {};
       localStorage.setItem(
         "myFollowings",
-        JSON.stringify({ ...parsedData, [tweeter.id]: !follow })
+        JSON.stringify({ ...parsedData, [twitter.id]: !follow })
       );
-    } catch {
-      console.log("oops !!! Error!!!");
+    } catch (e) {
+      console.error("Error updating local storage:", e);
     }
   };
 
@@ -51,7 +50,7 @@ export const Tweet = ({ tweeter }: { tweeter: TwitterUser }) => {
         <div className={styles.border_decor} />
         <div className={styles.border_avatar}>
           <img
-            src={tweeter.avatar}
+            src={twitter.avatar}
             alt="tweeter avatar"
             width={80}
             height={80}
@@ -69,7 +68,7 @@ export const Tweet = ({ tweeter }: { tweeter: TwitterUser }) => {
         className={`${styles.tweet_btn} ${follow && styles.active_btn}`}
         onClick={handleClick}
       >
-        {follow ? "following" : "follow"}
+        {follow ? "unfollow" : "follow"}
       </button>
     </div>
   );

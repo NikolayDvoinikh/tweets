@@ -9,6 +9,7 @@
   padding-bottom: 36px;
   text-transform: uppercase;
   text-align: center;
+  box-shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.75);
 }
 
 .tweet_bg_img {
@@ -22,6 +23,10 @@
   background-image: url("./tweetdecor.png");
 }
 
+.border_wrapper {
+  position: relative;
+}
+
 .border_decor {
   width: 100%;
   height: 8px;
@@ -29,9 +34,6 @@
   margin-bottom: 62px;
 }
 
-.border_wrapper {
-  position: relative;
-}
 .border_avatar {
   position: absolute;
   z-index: 100;
@@ -69,6 +71,8 @@
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
+  border: transparent;
+  box-shadow: var(--shadow);
   transition: background-color 300ms ease-in-out;
 }
 

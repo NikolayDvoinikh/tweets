@@ -6,6 +6,7 @@
 
   --main-color: #ebd8ff;
   --bg-tweet: #5736a3;
+  --shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.75);
 }
 
 body {

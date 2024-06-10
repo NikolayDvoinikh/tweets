@@ -1,13 +1,24 @@
-import { Tweet } from "./components/Tweet.js";
+import { Tweet, TwitterUser } from "./components/Tweet.js";
 import styles from "./app.module.css";
-import tweeters from "./data/tweeters.json";
+import getUsers from "./services/api.ts";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [twittersList, settTwittersList] = useState<TwitterUser[]>([]);
+
+  useEffect(() => {
+    const getTwittersList = async () => {
+      const list = await getUsers();
+      if (list) settTwittersList(list);
+    };
+    getTwittersList();
+  }, []);
+
   return (
     <section>
       <div className={styles.container}>
-        {tweeters.map((tweeter) => (
-          <Tweet key={tweeter.id} tweeter={tweeter} />
+        {twittersList?.map((twitter) => (
+          <Tweet key={twitter.id} twitter={twitter} />
         ))}
       </div>
     </section>
