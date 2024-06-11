@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { updateFollowStatus, apiLayout } from "../services/api";
 import styles from "./tweet.module.css";
 
 export interface TwitterUser {
@@ -9,13 +10,13 @@ export interface TwitterUser {
   id: string;
 }
 
-export const Tweet = ({ twitter }: { twitter: TwitterUser }) => {
+export const Tweet = ({ user }: { user: TwitterUser }) => {
   const [follow, setFollow] = useState<boolean>(() => {
     try {
       const data = localStorage.getItem("myFollowings");
       if (data) {
         const parsedData = JSON.parse(data);
-        return parsedData[twitter.id] || false;
+        return parsedData[user.id] || false;
       }
       return false;
     } catch (e) {
@@ -23,14 +24,20 @@ export const Tweet = ({ twitter }: { twitter: TwitterUser }) => {
       return false;
     }
   });
-  const [followers, setFollowers] = useState(twitter);
 
-  const handleClick = () => {
+  const [twitter, setTwitter] = useState(user);
+
+  const handleClick = async () => {
+    const updatedResult = await apiLayout(updateFollowStatus, {
+      id: twitter.id,
+      followers: twitter.followers + (follow ? -1 : 1),
+    });
+
+    if (!updatedResult) return;
     setFollow((prev) => !prev);
-    setFollowers((prev) => ({
-      ...prev,
-      followers: prev.followers + (follow ? -1 : 1),
-    }));
+    setTwitter(updatedResult);
+
+    /// add info following in localstorage
     try {
       const myFollowings = localStorage.getItem("myFollowings");
       const parsedData = myFollowings ? JSON.parse(myFollowings) : {};
@@ -58,10 +65,10 @@ export const Tweet = ({ twitter }: { twitter: TwitterUser }) => {
         </div>
       </div>
       <h2 className={styles.tweet_title}>
-        {followers?.tweets.toLocaleString("en")} tweets
+        {twitter?.tweets.toLocaleString("en")} tweets
       </h2>
       <h3 className={styles.tweet_counter}>
-        {followers?.followers.toLocaleString("en")} followers
+        {twitter?.followers.toLocaleString("en")} followers
       </h3>
       <button
         type="button"
