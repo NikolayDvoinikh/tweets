@@ -2,14 +2,6 @@ import { useState } from "react";
 import { updateFollowStatus, apiLayout } from "../services/api";
 import styles from "./tweet.module.css";
 
-export interface TwitterUser {
-  name: string;
-  avatar: string;
-  tweets: number;
-  followers: number;
-  id: string;
-}
-
 export const Tweet = ({ user }: { user: TwitterUser }) => {
   const [follow, setFollow] = useState<boolean>(() => {
     try {
