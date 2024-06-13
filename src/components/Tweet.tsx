@@ -27,7 +27,7 @@ export const Tweet = ({ user }: { user: TwitterUser }) => {
 
     if (!updatedResult) return;
     setFollow((prev) => !prev);
-    setTwitter(updatedResult);
+    setTwitter(updatedResult as TwitterUser);
 
     /// add info following in localstorage
     try {

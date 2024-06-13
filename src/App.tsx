@@ -1,4 +1,4 @@
-import { Tweet, TwitterUser } from "./components/Tweet.js";
+import { Tweet } from "./components/Tweet.js";
 import styles from "./app.module.css";
 import { getUsers, apiLayout } from "./services/api.ts";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     const getTwittersList = async () => {
       const list = await apiLayout(getUsers);
-      if (list) setTwittersList(list);
+      if (list) setTwittersList(list as TwitterUser[]);
     };
     getTwittersList();
   }, []);

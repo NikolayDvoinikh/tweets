@@ -1,16 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 
-interface InfoToUpdate {
-  id: TwitterUser["id"];
-  followers: TwitterUser["followers"];
-}
-
 const api = axios.create({
   baseURL: "https://63fbaaf31ff79e133292e0ae.mockapi.io",
 });
 
-const apiLayout = async <T>(
-  foo: (data?: InfoToUpdate) => Promise<T>,
+const apiLayout = async (
+  foo: (data?: any) => Promise<TwitterUser | TwitterUser[]>,
   data?: InfoToUpdate
 ) => {
   try {
@@ -25,13 +20,7 @@ const getUsers = async () => {
   return data;
 };
 
-const updateFollowStatus = async ({
-  id,
-  followers,
-}: {
-  id: TwitterUser["id"];
-  followers: TwitterUser["followers"];
-}) => {
+const updateFollowStatus = async ({ id, followers }: InfoToUpdate) => {
   const { data: updatedStatus }: AxiosResponse<TwitterUser> = await api.put(
     `/users/${id}`,
     { followers }
