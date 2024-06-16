@@ -1,5 +1,6 @@
 {
   "name": "tweets",
+  "homepage": "https://NikolayDvoinikh.github.io/tweets/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
